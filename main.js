@@ -14,9 +14,7 @@ chickenRightImg.src = "images/moorhuhn-rechts.png";
 // ========================
 // Sachen vom HTML
 // ========================
-const scoreElement = document.getElementById("score");
 
-const timeElement = document.getElementById("time");
 const gameOverElement = document.getElementById("gameOver");
 
 let timeLeft = 30; // Sekunden
@@ -62,7 +60,6 @@ class Chicken {
 
   move() {
     if (!gameRunning) return;
-
     this.x += this.speed;
 
     if (this.x > canvas.width + 50 || this.x < -50) {
@@ -102,7 +99,7 @@ let score = 0;
 let animationId;
 
 function gameLoop() {
-  if (!gameRunning) return;
+//  if (!gameRunning) return;  // läuft immer weiter!, stoppt nur die Bewegungen
 
   // Hintergrund zuerst zeichnen
   ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
@@ -113,6 +110,26 @@ function gameLoop() {
       chicken.draw();
     }
   });
+
+  // ========================
+  // HUD IMMER ZULETZT (damit es oben liegt)
+  // ========================
+  // Hintergrundbox
+  ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+  ctx.fillRect(10, 10, 180, 50);
+  ctx.fillRect(canvas.width - 180, 10, 170, 50);
+
+  // Text
+  ctx.fillStyle = "white";
+  ctx.font = "24px Arial";
+
+  // Score links
+  ctx.textAlign = "left";
+  ctx.fillText("Score: " + score, 20, 40);
+
+  // Zeit rechts
+  ctx.textAlign = "right";
+  ctx.fillText("Time: " + timeLeft, canvas.width - 20, 40);
 
   animationId = requestAnimationFrame(gameLoop);
 }
@@ -161,7 +178,6 @@ function trefferErkennung(mausX, mausY) {
     ) {
       chicken.alive = false;
       score++;
-      scoreElement.textContent = score;
 
       setTimeout(() => {
         chicken.respawn();
@@ -197,12 +213,12 @@ canvas.addEventListener("touchstart", function(event) {
 const timer = setInterval(() => {
   if (!gameRunning) return;
 
-  timeLeft--;
-  timeElement.textContent = "Time: " + timeLeft;
-
   if (timeLeft <= 0) {
     endGame();
+    return;
   }
+
+  timeLeft--;
 }, 1000);
 
 // ========================
