@@ -14,24 +14,32 @@ let timeLeft = 30; // Sekunden
 let gameRunning = true;
 
 // ========================
-// canvas
+// canvas / Volle Seitenbreite
 // ========================
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight * 0.5;
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
 
 // ========================
 // Huhn
 // ========================
 class Chicken {
   constructor() {
-  this.x = Math.random() * 700;
-  this.y = Math.random() * 300;
+  this.x = Math.random() * (canvas.width - 50);  // muss dynamisch sein, keine fixe breite, this.x = Math.random() * 700;
+  this.y = Math.random() * (canvas.height - 50);  // muss dynamisch sein, keine fixe breite, this.y = Math.random() * 300;
   this.speed = 1 + Math.random() * 1.5; // speed = BASIS + Zufall * SPANNE // war auf 2 + Math.random() * 3
   this.alive = true;
   }
   move() {
     this.x += this.speed;
-    if (this.x > 800) this.x = -50;
+    if (this.x > canvas.width) this.x = -50;  // muss dynamisch sein, keine fixe breite, if (this.x > 800) this.x = -50;
   }
 
   draw() {
