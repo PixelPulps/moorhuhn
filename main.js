@@ -1,10 +1,3 @@
-/* TODO:
-* - [x] Timer + gameover seite 
-* - [ ] mehrere Hühner
-* - [ ]  
-* - [ ] 
-*/
-
 const scoreElement = document.getElementById("score");
 
 const timeElement = document.getElementById("time");
@@ -22,29 +15,67 @@ const ctx = canvas.getContext("2d");
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight * 0.5;
+
+  // Hühner richtig nach resize ins Bild setzen
+  chickens.forEach(chicken => {
+//    chicken.x = Math.random() * (canvas.width - 50);
+    chicken.y = Math.random() * (canvas.height - 50);
+  });
 }
 
+
+
 window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
+
 
 // ========================
-// Huhn
+// Hühner
 // ========================
 class Chicken {
   constructor() {
-  this.x = Math.random() * (canvas.width - 50);  // muss dynamisch sein, keine fixe breite, this.x = Math.random() * 700;
-  this.y = Math.random() * (canvas.height - 50);  // muss dynamisch sein, keine fixe breite, this.y = Math.random() * 300;
-  this.speed = 1 + Math.random() * 1.5; // speed = BASIS + Zufall * SPANNE // war auf 2 + Math.random() * 3
-  this.alive = true;
+
+    // zufällig: kommt von links oder rechts
+    this.direction = Math.random() < 0.5 ? "right" : "left";
+
+    if (this.direction === "right") {
+      this.x = -50; // startet links außerhalb
+      this.speed = 1 + Math.random() * 1.5;
+    } else {
+      this.x = canvas.width + 50; // startet rechts außerhalb
+      this.speed = -(1 + Math.random() * 1.5); // nach links fliegen
+    }
+
+    this.y = Math.random() * (canvas.height - 50);
+    this.alive = true;
   }
-  move() {
+
+    move() {
     this.x += this.speed;
-    if (this.x > canvas.width) this.x = -50;  // muss dynamisch sein, keine fixe breite, if (this.x > 800) this.x = -50;
+
+    // wenn rausgeflogen → neu spawnen
+    if (this.x > canvas.width + 50 || this.x < -50) {
+      this.respawn();
+    }
+  }
+    // respawn Funktion
+  respawn() {
+    this.direction = Math.random() < 0.5 ? "right" : "left";
+
+    if (this.direction === "right") {
+      this.x = -50;
+      this.speed = 1 + Math.random() * 1.5;
+    } else {
+      this.x = canvas.width + 50;
+      this.speed = -(1 + Math.random() * 1.5);
+    }
+
+    this.y = Math.random() * (canvas.height - 50);
+    this.alive = true;
   }
 
   draw() {
     ctx.fillStyle = "red";
-    ctx.fillRect(this.x, this.y, 40, 40); 
+    ctx.fillRect(this.x, this.y, 40, 40);
   }
 }
 
@@ -53,6 +84,7 @@ class Chicken {
 // ========================
 const chickens = [new Chicken(), new Chicken()];
 let score = 0;
+let animationId;
 
 function gameLoop () {
   if (!gameRunning) return;  // Für Game Over
@@ -66,8 +98,10 @@ function gameLoop () {
     } 
   });
 
-  requestAnimationFrame(gameLoop);
+  animationId = requestAnimationFrame(gameLoop);
 }
+
+resizeCanvas();
 
 gameLoop();
 
@@ -108,6 +142,7 @@ function trefferErkennung(mausX, mausY) {
 // Für Mobile Touch statt Klick
 // ========================
 canvas.addEventListener("touchstart", function(event) {
+  event.preventDefault();
   const rect = canvas.getBoundingClientRect();
 
   const touch = event.touches[0];
@@ -115,7 +150,7 @@ canvas.addEventListener("touchstart", function(event) {
   const mouseY = touch.clientY - rect.top;
 
   trefferErkennung(mouseX, mouseY);
-});
+}, { passive: false });
 
 // ========================
 // Timer
@@ -137,11 +172,12 @@ const timer = setInterval(() => {
 function endGame() {
   gameRunning = false;
 
+  clearInterval(timer);
+  cancelAnimationFrame(animationId);
+
   if (score < 5) {
     gameOverElement.style.display = "block";
   }
 
   console.log("Game Over! Score:", score);
 }
-
-
