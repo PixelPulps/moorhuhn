@@ -30,7 +30,7 @@ const ctx = canvas.getContext("2d");
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight * 0.5;
+  canvas.height = window.innerHeight;
 
   // Hühner richtig nach resize ins Bild setzen
   chickens.forEach(chicken => {
@@ -106,7 +106,6 @@ function gameLoop() {
 
   // Hintergrund zuerst zeichnen
   ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
-  //ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   chickens.forEach(chicken => {
     if (chicken.alive) {
@@ -119,8 +118,6 @@ function gameLoop() {
 }
 
 resizeCanvas();
-
-// gameLoop();
 
 // Bilder zuerst laden
 let assetsLoaded = 0;

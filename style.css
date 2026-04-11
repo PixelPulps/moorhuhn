@@ -2,8 +2,14 @@ body {
   margin: 0;
 }
 
+canvas {
+  display: block;
+  margin: 0 auto;
+  border: 2px solid black;
+}
+
 #gameCanvas {
   width: 100%;
-  height: 50vh; /* 50% der Bildschirmhöhe */
+  height: auto; /*100vh; /* 50% der Bildschirmhöhe */
   display: block;
 }
