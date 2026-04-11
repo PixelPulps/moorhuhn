@@ -187,3 +187,5 @@ function endGame() {
 
   console.log("Game Over! Score:", score);
 }
+
+
