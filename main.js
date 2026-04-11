@@ -1,8 +1,6 @@
 /* TODO:
-* - [ ] resparn fehlt
 * - [x] Timer + gameover seite 
 * - [ ] mehrere Hühner
-* - [ ] CSS <--- wird momentan bearbeitet
 * - [ ]  
 * - [ ] 
 */
