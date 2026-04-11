@@ -149,11 +149,15 @@ function trefferErkennung(mausX, mausY) {
 // ========================
 canvas.addEventListener("touchstart", function(event) {
   event.preventDefault();
-  const rect = canvas.getBoundingClientRect();
 
+  const rect = canvas.getBoundingClientRect();
   const touch = event.changedTouches[0];
-  const mouseX = touch.clientX - rect.left;
-  const mouseY = touch.clientY - rect.top;
+
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+
+  const mouseX = (touch.clientX - rect.left) * scaleX;
+  const mouseY = (touch.clientY - rect.top) * scaleY;
 
   trefferErkennung(mouseX, mouseY);
 }, { passive: false });
