@@ -1,3 +1,29 @@
+// ========================
+// Bilder
+// ========================
+
+const backgroundImg = new Image();
+backgroundImg.src = "images/origbig.png";
+
+const chickenLeftImg = new Image();
+chickenLeftImg.src = "images/moorhuhn-links.png";
+
+const chickenRightImg = new Image();
+chickenRightImg.src = "images/moorhuhn-rechts.png";
+
+// ========================
+// Vermeidet Bild-Ladeprobleme
+// ========================
+
+backgroundImg.onload = () => {};
+chickenLeftImg.onload = () => {};
+chickenRightImg.onload = () => {
+  gameLoop(); // startet erst wenn Bilder geladen sind
+};
+
+// ========================
+// Sachen vom HTML
+// ========================
 const scoreElement = document.getElementById("score");
 
 const timeElement = document.getElementById("time");
@@ -23,10 +49,7 @@ function resizeCanvas() {
   });
 }
 
-
-
 window.addEventListener("resize", resizeCanvas);
-
 
 // ========================
 // Hühner
@@ -75,8 +98,11 @@ class Chicken {
   }
 
   draw() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(this.x, this.y, 40, 40);
+    if (this.direction === "right") {
+      ctx.drawImage(chickenRightImg, this.x, this.y, 40, 40);
+    } else {
+      ctx.drawImage(chickenLeftImg, this.x, this.y, 40, 40);
+    }
   }
 }
 
@@ -90,7 +116,9 @@ let animationId;
 function gameLoop() {
   if (!gameRunning) return;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Hintergrund zuerst zeichnen
+  ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+  //ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   chickens.forEach(chicken => {
     if (chicken.alive) {
