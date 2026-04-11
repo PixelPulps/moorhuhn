@@ -50,9 +50,10 @@ class Chicken {
   }
 
     move() {
+    if (!gameRunning) return;
+
     this.x += this.speed;
 
-    // wenn rausgeflogen → neu spawnen
     if (this.x > canvas.width + 50 || this.x < -50) {
       this.respawn();
     }
@@ -86,16 +87,16 @@ const chickens = [new Chicken(), new Chicken()];
 let score = 0;
 let animationId;
 
-function gameLoop () {
-  if (!gameRunning) return;  // Für Game Over
+function gameLoop() {
+  if (!gameRunning) return;
 
-  ctx.clearRect (0, 0, canvas.width, canvas.height);
-  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   chickens.forEach(chicken => {
     if (chicken.alive) {
-      chicken.move ();
-      chicken.draw ();
-    } 
+      chicken.move();
+      chicken.draw();
+    }
   });
 
   animationId = requestAnimationFrame(gameLoop);
@@ -133,6 +134,11 @@ function trefferErkennung(mausX, mausY) {
       score++;
       scoreElement.textContent = score;
 
+      setTimeout(() => {
+        chicken.respawn();
+        chicken.alive = true;
+      }, 200);
+
       console.log("Treffer! Score:", score);
     }
   });
@@ -145,7 +151,7 @@ canvas.addEventListener("touchstart", function(event) {
   event.preventDefault();
   const rect = canvas.getBoundingClientRect();
 
-  const touch = event.touches[0];
+  const touch = event.changedTouches[0];
   const mouseX = touch.clientX - rect.left;
   const mouseY = touch.clientY - rect.top;
 
@@ -174,10 +180,6 @@ function endGame() {
 
   clearInterval(timer);
   cancelAnimationFrame(animationId);
-
-  if (score < 5) {
-    gameOverElement.style.display = "block";
-  }
 
   console.log("Game Over! Score:", score);
 }
