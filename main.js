@@ -12,16 +12,6 @@ const chickenRightImg = new Image();
 chickenRightImg.src = "images/moorhuhn-rechts.png";
 
 // ========================
-// Vermeidet Bild-Ladeprobleme
-// ========================
-
-backgroundImg.onload = () => {};
-chickenLeftImg.onload = () => {};
-chickenRightImg.onload = () => {
-  gameLoop(); // startet erst wenn Bilder geladen sind
-};
-
-// ========================
 // Sachen vom HTML
 // ========================
 const scoreElement = document.getElementById("score");
@@ -44,7 +34,7 @@ function resizeCanvas() {
 
   // Hühner richtig nach resize ins Bild setzen
   chickens.forEach(chicken => {
-//    chicken.x = Math.random() * (canvas.width - 50);
+    chicken.x = Math.max(0, Math.min(chicken.x, canvas.width - 50));
     chicken.y = Math.random() * (canvas.height - 50);
   });
 }
@@ -56,23 +46,21 @@ window.addEventListener("resize", resizeCanvas);
 // ========================
 class Chicken {
   constructor() {
-
-    // zufällig: kommt von links oder rechts
     this.direction = Math.random() < 0.5 ? "right" : "left";
 
     if (this.direction === "right") {
-      this.x = -50; // startet links außerhalb
+      this.x = -50;
       this.speed = 1 + Math.random() * 1.5;
     } else {
-      this.x = canvas.width + 50; // startet rechts außerhalb
-      this.speed = -(1 + Math.random() * 1.5); // nach links fliegen
+      this.x = canvas.width + 50;
+      this.speed = -(1 + Math.random() * 1.5);
     }
 
     this.y = Math.random() * (canvas.height - 50);
     this.alive = true;
   }
 
-    move() {
+  move() {
     if (!gameRunning) return;
 
     this.x += this.speed;
@@ -81,7 +69,7 @@ class Chicken {
       this.respawn();
     }
   }
-    // respawn Funktion
+
   respawn() {
     this.direction = Math.random() < 0.5 ? "right" : "left";
 
@@ -132,7 +120,23 @@ function gameLoop() {
 
 resizeCanvas();
 
-gameLoop();
+// gameLoop();
+
+// Bilder zuerst laden
+let assetsLoaded = 0;
+const totalAssets = 3;
+
+function checkStart() {
+  assetsLoaded++;
+  if (assetsLoaded >= totalAssets) {
+    resizeCanvas();
+    gameLoop();
+  }
+}
+
+backgroundImg.onload = checkStart;
+chickenLeftImg.onload = checkStart;
+chickenRightImg.onload = checkStart;
 
 // ========================
 // schießen
