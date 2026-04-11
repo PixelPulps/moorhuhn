@@ -1,6 +1,20 @@
-const scoreElement = document.getElementById("score");
+// ========================
+// Bilder
+// ========================
 
-const timeElement = document.getElementById("time");
+const backgroundImg = new Image();
+backgroundImg.src = "images/origbig.png";
+
+const chickenLeftImg = new Image();
+chickenLeftImg.src = "images/moorhuhn-links.png";
+
+const chickenRightImg = new Image();
+chickenRightImg.src = "images/moorhuhn-rechts.png";
+
+// ========================
+// Sachen vom HTML
+// ========================
+
 const gameOverElement = document.getElementById("gameOver");
 
 let timeLeft = 30; // Sekunden
@@ -14,51 +28,45 @@ const ctx = canvas.getContext("2d");
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight * 0.5;
+  canvas.height = window.innerHeight;
 
   // Hühner richtig nach resize ins Bild setzen
   chickens.forEach(chicken => {
-//    chicken.x = Math.random() * (canvas.width - 50);
+    chicken.x = Math.max(0, Math.min(chicken.x, canvas.width - 50));
     chicken.y = Math.random() * (canvas.height - 50);
   });
 }
 
-
-
 window.addEventListener("resize", resizeCanvas);
-
 
 // ========================
 // Hühner
 // ========================
 class Chicken {
   constructor() {
-
-    // zufällig: kommt von links oder rechts
     this.direction = Math.random() < 0.5 ? "right" : "left";
 
     if (this.direction === "right") {
-      this.x = -50; // startet links außerhalb
+      this.x = -50;
       this.speed = 1 + Math.random() * 1.5;
     } else {
-      this.x = canvas.width + 50; // startet rechts außerhalb
-      this.speed = -(1 + Math.random() * 1.5); // nach links fliegen
+      this.x = canvas.width + 50;
+      this.speed = -(1 + Math.random() * 1.5);
     }
 
     this.y = Math.random() * (canvas.height - 50);
     this.alive = true;
   }
 
-    move() {
+  move() {
     if (!gameRunning) return;
-
     this.x += this.speed;
 
     if (this.x > canvas.width + 50 || this.x < -50) {
       this.respawn();
     }
   }
-    // respawn Funktion
+
   respawn() {
     this.direction = Math.random() < 0.5 ? "right" : "left";
 
@@ -75,8 +83,11 @@ class Chicken {
   }
 
   draw() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(this.x, this.y, 40, 40);
+    if (this.direction === "right") {
+      ctx.drawImage(chickenRightImg, this.x, this.y, 40, 40);
+    } else {
+      ctx.drawImage(chickenLeftImg, this.x, this.y, 40, 40);
+    }
   }
 }
 
@@ -88,9 +99,10 @@ let score = 0;
 let animationId;
 
 function gameLoop() {
-  if (!gameRunning) return;
+//  if (!gameRunning) return;  // läuft immer weiter!, stoppt nur die Bewegungen
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Hintergrund zuerst zeichnen
+  ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
 
   chickens.forEach(chicken => {
     if (chicken.alive) {
@@ -99,12 +111,46 @@ function gameLoop() {
     }
   });
 
+  // ========================
+  // HUD IMMER ZULETZT (damit es oben liegt)
+  // ========================
+  // Hintergrundbox
+  ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+  ctx.fillRect(10, 10, 180, 50);
+  ctx.fillRect(canvas.width - 180, 10, 170, 50);
+
+  // Text
+  ctx.fillStyle = "white";
+  ctx.font = "24px Arial";
+
+  // Score links
+  ctx.textAlign = "left";
+  ctx.fillText("Score: " + score, 20, 40);
+
+  // Zeit rechts
+  ctx.textAlign = "right";
+  ctx.fillText("Time: " + timeLeft, canvas.width - 20, 40);
+
   animationId = requestAnimationFrame(gameLoop);
 }
 
 resizeCanvas();
 
-gameLoop();
+// Bilder zuerst laden
+let assetsLoaded = 0;
+const totalAssets = 3;
+
+function checkStart() {
+  assetsLoaded++;
+  if (assetsLoaded >= totalAssets) {
+    resizeCanvas();
+    gameLoop();
+  }
+}
+
+backgroundImg.onload = checkStart;
+chickenLeftImg.onload = checkStart;
+chickenRightImg.onload = checkStart;
 
 // ========================
 // schießen
@@ -132,7 +178,6 @@ function trefferErkennung(mausX, mausY) {
     ) {
       chicken.alive = false;
       score++;
-      scoreElement.textContent = score;
 
       setTimeout(() => {
         chicken.respawn();
@@ -168,12 +213,12 @@ canvas.addEventListener("touchstart", function(event) {
 const timer = setInterval(() => {
   if (!gameRunning) return;
 
-  timeLeft--;
-  timeElement.textContent = "Time: " + timeLeft;
-
   if (timeLeft <= 0) {
     endGame();
+    return;
   }
+
+  timeLeft--;
 }, 1000);
 
 // ========================
@@ -187,3 +232,5 @@ function endGame() {
 
   console.log("Game Over! Score:", score);
 }
+
+
