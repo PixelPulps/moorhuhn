@@ -105,6 +105,19 @@ function trefferErkennung(mausX, mausY) {
 }
 
 // ========================
+// Für Mobile Touch statt Klick
+// ========================
+canvas.addEventListener("touchstart", function(event) {
+  const rect = canvas.getBoundingClientRect();
+
+  const touch = event.touches[0];
+  const mouseX = touch.clientX - rect.left;
+  const mouseY = touch.clientY - rect.top;
+
+  trefferErkennung(mouseX, mouseY);
+});
+
+// ========================
 // Timer
 // ========================
 const timer = setInterval(() => {
@@ -130,3 +143,5 @@ function endGame() {
 
   console.log("Game Over! Score:", score);
 }
+
+
