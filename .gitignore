@@ -24,8 +24,9 @@
 !*/.docs/**
 !*/.github/ISSUE_TEMPLATE/
 !*/.github/workflows/
+!*/assets/images/
+!*/assets/sounds/
 !*/images/
-
 
 ##############################################
 # Ausnahme: diese Dateien NICHT ignorieren
@@ -48,10 +49,13 @@
 !/images/origbig.png
 !/.gitattributes
 !/.gitignore
+!/Bewertungsgrundlage.xlsx
 !/index.html
 !/LICENSE
 !/main.js
 !/README.md
 !/style.css
+!/assets/images/**
+!/assets/sounds/**
 
 
