@@ -3,13 +3,13 @@
 // ========================
 
 const backgroundImg = new Image();
-backgroundImg.src = "images/origbig.png";
+backgroundImg.src = "assets/images/Farm.jpg";
 
 const chickenLeftImg = new Image();
-chickenLeftImg.src = "images/moorhuhn-links.png";
+chickenLeftImg.src = "assets/images/Chicken/moorhuhn-links.png";
 
 const chickenRightImg = new Image();
-chickenRightImg.src = "images/moorhuhn-rechts.png";
+chickenRightImg.src = "assets/images/Chicken/moorhuhn-rechts.png";
 
 // ========================
 // Sachen vom HTML
