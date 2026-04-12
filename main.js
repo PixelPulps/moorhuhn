@@ -11,6 +11,9 @@ chickenLeftImg.src = "assets/images/Chicken/moorhuhn-links.png";
 const chickenRightImg = new Image();
 chickenRightImg.src = "assets/images/Chicken/moorhuhn-rechts.png";
 
+const crosshairImg = new Image();
+crosshairImg.src = "assets/images/crosshair0.png";
+
 // ========================
 // Sachen vom HTML
 // ========================
@@ -27,6 +30,13 @@ let chickenSize = 40; // Chicken relative Größe
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+
+canvas.addEventListener("mousemove", function (event) {
+  const rect = canvas.getBoundingClientRect();
+
+  mouseX = event.clientX - rect.left;
+  mouseY = event.clientY - rect.top;
+});
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -102,6 +112,9 @@ const chickens = [new Chicken(), new Chicken()];
 let score = 0;
 let animationId;
 
+let mouseX = 0;
+let mouseY = 0;
+
 function gameLoop() {
 //  if (!gameRunning) return;  // läuft immer weiter!, stoppt nur die Bewegungen
 
@@ -167,6 +180,8 @@ function formatTime(seconds) {
   ctx.strokeText("Time: " + formatTime(timeLeft), canvas.width - 20, 40);
   ctx.fillText("Time: " + formatTime(timeLeft), canvas.width - 20, 40);
 
+  ctx.drawImage(crosshairImg, mouseX - 20, mouseY - 20, 40, 40);
+  
   animationId = requestAnimationFrame(gameLoop);
 }
 
