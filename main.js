@@ -160,10 +160,6 @@ function formatTime(seconds) {
   drawRoundedRect(canvas.width - 145, 7, 140, 40, 20);  //150=canvas.width, 10=position von oben, 140=Breite, 40=Höhe, 20=Rundung
   drawRoundedRect(160, 7, 140, 40, 20);
 
-  // ctx.fillStyle = "black";
-  // ctx.fillRect(10, 10, 180, 50);
-  // ctx.fillRect(canvas.width - 180, 10, 170, 50);
-
   // Text
   ctx.font = "24px 'Press Start 2P'";
   ctx.fillStyle = "white";
@@ -181,7 +177,7 @@ function formatTime(seconds) {
   ctx.fillText("Time: " + formatTime(timeLeft), canvas.width - 20, 40);
 
   ctx.drawImage(crosshairImg, mouseX - 20, mouseY - 20, 40, 40);
-  
+
   animationId = requestAnimationFrame(gameLoop);
 }
 
