@@ -3,13 +3,13 @@
 // ========================
 
 const backgroundImg = new Image();
-backgroundImg.src = "images/origbig.png";
+backgroundImg.src = "assets/images/Farm.jpg";
 
 const chickenLeftImg = new Image();
-chickenLeftImg.src = "images/moorhuhn-links.png";
+chickenLeftImg.src = "assets/images/Chicken/moorhuhn-links.png";
 
 const chickenRightImg = new Image();
-chickenRightImg.src = "images/moorhuhn-rechts.png";
+chickenRightImg.src = "assets/images/Chicken/moorhuhn-rechts.png";
 
 // ========================
 // Sachen vom HTML
@@ -23,6 +23,8 @@ let gameRunning = true;
 // ========================
 // canvas / Volle Seitenbreite
 // ========================
+let chickenSize = 40; // Chicken relative Größe
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -30,10 +32,12 @@ function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  // Hühner richtig nach resize ins Bild setzen
+  // Skalierung abhängig von Bildschirmbreite
+  chickenSize = Math.min(canvas.width, canvas.height) * 0.08; // 8% der Bildschirmbreite
+
   chickens.forEach(chicken => {
-    chicken.x = Math.max(0, Math.min(chicken.x, canvas.width - 50));
-    chicken.y = Math.random() * (canvas.height - 50);
+    chicken.x = Math.max(0, Math.min(chicken.x, canvas.width - chickenSize));
+    chicken.y = Math.random() * (canvas.height - chickenSize);
   });
 }
 
@@ -84,12 +88,12 @@ class Chicken {
 
   draw() {
     if (this.direction === "right") {
-      ctx.drawImage(chickenRightImg, this.x, this.y, 40, 40);
+      ctx.drawImage(chickenRightImg, this.x, this.y, chickenSize, chickenSize);
     } else {
-      ctx.drawImage(chickenLeftImg, this.x, this.y, 40, 40);
-    }
+      ctx.drawImage(chickenLeftImg, this.x, this.y, chickenSize, chickenSize);
+    }   
   }
-}
+}  
 
 // ========================
 // gameLoop
@@ -114,22 +118,54 @@ function gameLoop() {
   // ========================
   // HUD IMMER ZULETZT (damit es oben liegt)
   // ========================
+// Runde Canvas Boxen bauen
+function drawRoundedRect(x, y, width, height, radius) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+
+  ctx.fill();
+}
+
+// Zeit formatieren
+function formatTime(seconds) {
+  let m = Math.floor(seconds / 60);
+  let s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
   // Hintergrundbox
-  ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-  ctx.fillRect(10, 10, 180, 50);
-  ctx.fillRect(canvas.width - 180, 10, 170, 50);
+  ctx.fillStyle = "black";
+  drawRoundedRect(canvas.width - 145, 7, 140, 40, 20);  //150=canvas.width, 10=position von oben, 140=Breite, 40=Höhe, 20=Rundung
+  drawRoundedRect(160, 7, 140, 40, 20);
+
+  // ctx.fillStyle = "black";
+  // ctx.fillRect(10, 10, 180, 50);
+  // ctx.fillRect(canvas.width - 180, 10, 170, 50);
 
   // Text
+  ctx.font = "24px 'Press Start 2P'";
   ctx.fillStyle = "white";
-  ctx.font = "24px Arial";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 4;
 
   // Score links
   ctx.textAlign = "left";
+  ctx.strokeText("Score: " + score, 20, 40);
   ctx.fillText("Score: " + score, 20, 40);
 
   // Zeit rechts
   ctx.textAlign = "right";
-  ctx.fillText("Time: " + timeLeft, canvas.width - 20, 40);
+  ctx.strokeText("Time: " + formatTime(timeLeft), canvas.width - 20, 40);
+  ctx.fillText("Time: " + formatTime(timeLeft), canvas.width - 20, 40);
 
   animationId = requestAnimationFrame(gameLoop);
 }
@@ -172,9 +208,9 @@ function trefferErkennung(mausX, mausY) {
     if (
       chicken.alive &&
       mausX > chicken.x &&
-      mausX < chicken.x + 40 &&
+      mausX < chicken.x + chickenSize &&
       mausY > chicken.y &&
-      mausY < chicken.y + 40
+      mausY < chicken.y + chickenSize
     ) {
       chicken.alive = false;
       score++;
