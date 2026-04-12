@@ -33,7 +33,7 @@ function resizeCanvas() {
   canvas.height = window.innerHeight;
 
   // Skalierung abhängig von Bildschirmbreite
-  chickenSize = Math.min(canvas.width, canvas.height) * 0.08; // 5% der Bildschirmbreite
+  chickenSize = Math.min(canvas.width, canvas.height) * 0.08; // 8% der Bildschirmbreite
 
   chickens.forEach(chicken => {
     chicken.x = Math.max(0, Math.min(chicken.x, canvas.width - chickenSize));
