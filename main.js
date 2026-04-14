@@ -301,5 +301,5 @@ restartBtn.addEventListener("click", () => {
 // Menü Button
 // ========================
 menuBtn.addEventListener("click", () => {
-  window.location.href = "";  // play_a_Game-Seite
+  window.location.href = "https://pixelpulps.github.io/play_a_game/";  // play_a_Game-Seite
 });
