@@ -26,7 +26,7 @@ const finalScore = document.getElementById("finalScore");
 
 const TOP_SAFE_ZONE = 80; // z.B. 80px frei lassen für Score + Time
 
-let timeLeft = 90;                                         // Zeit in Sekunden
+let timeLeft = 90;                                         // Zeit in Sekunden -> 90;
 let gameRunning = true;
 
 // ========================
@@ -54,7 +54,6 @@ function resizeCanvas() {
   chickens.forEach(chicken => {
     chicken.x = Math.max(0, Math.min(chicken.x, canvas.width - chickenSize));
     chicken.y = TOP_SAFE_ZONE + Math.random() * (canvas.height - TOP_SAFE_ZONE - chickenSize);
-    // chicken.y = Math.random() * (canvas.height - chickenSize);
   });
 }
 
@@ -75,7 +74,6 @@ class Chicken {
       this.speed = -(1 + Math.random() * 1.5);
     }
     this.y = TOP_SAFE_ZONE + Math.random() * (canvas.height - TOP_SAFE_ZONE - 50);
-    // this.y = Math.random() * (canvas.height - 50);
     this.alive = true;
   }
 
@@ -100,7 +98,6 @@ class Chicken {
     }
 
     this.y = TOP_SAFE_ZONE + Math.random() * (canvas.height - TOP_SAFE_ZONE - 50);
-    // this.y = Math.random() * (canvas.height - 50);
     this.alive = true;
   }
 
@@ -109,9 +106,9 @@ class Chicken {
       ctx.drawImage(chickenRightImg, this.x, this.y, chickenSize, chickenSize);
     } else {
       ctx.drawImage(chickenLeftImg, this.x, this.y, chickenSize, chickenSize);
-    }   
+    }
   }
-}  
+}
 
 // ========================
 // gameLoop
@@ -130,7 +127,7 @@ let mouseX = 0;
 let mouseY = 0;
 
 function gameLoop() {
-//  if (!gameRunning) return;  // läuft immer weiter!, stoppt nur die Bewegungen
+  //  if (!gameRunning) return;  // läuft immer weiter!, stoppt nur die Bewegungen
 
   // Hintergrund zuerst zeichnen
   ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
@@ -145,29 +142,29 @@ function gameLoop() {
   // ========================
   // HUD IMMER ZULETZT (damit es oben liegt)
   // ========================
-// Runde Canvas Boxen bauen
-function drawRoundedRect(x, y, width, height, radius) {
-  ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.lineTo(x + width - radius, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-  ctx.lineTo(x + width, y + height - radius);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-  ctx.lineTo(x + radius, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-  ctx.lineTo(x, y + radius);
-  ctx.quadraticCurveTo(x, y, x + radius, y);
-  ctx.closePath();
+  // Runde Canvas Boxen bauen
+  function drawRoundedRect(x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
 
-  ctx.fill();
-}
+    ctx.fill();
+  }
 
-// Zeit formatieren
-function formatTime(seconds) {
-  let m = Math.floor(seconds / 60);
-  let s = seconds % 60;
-  return `${m}:${s.toString().padStart(2, "0")}`;
-}
+  // Zeit formatieren
+  function formatTime(seconds) {
+    let m = Math.floor(seconds / 60);
+    let s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  }
 
   // Hintergrundbox
   ctx.fillStyle = "black";
@@ -216,7 +213,7 @@ chickenRightImg.onload = checkStart;
 // ========================
 // schießen
 // ========================
-canvas.addEventListener("click", function(event) {
+canvas.addEventListener("click", function (event) {
   const rect = canvas.getBoundingClientRect();
 
   const mouseX = event.clientX - rect.left;
@@ -238,7 +235,7 @@ function trefferErkennung(mausX, mausY) {
       mausY < chicken.y + chickenSize
     ) {
       chicken.alive = false;
-      score++;
+      score += 10;
 
       setTimeout(() => {
         chicken.respawn();
@@ -253,7 +250,7 @@ function trefferErkennung(mausX, mausY) {
 // ========================
 // Für Mobile Touch statt Klick
 // ========================
-canvas.addEventListener("touchstart", function(event) {
+canvas.addEventListener("touchstart", function (event) {
   event.preventDefault();
 
   const rect = canvas.getBoundingClientRect();
