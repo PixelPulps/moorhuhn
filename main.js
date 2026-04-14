@@ -18,9 +18,13 @@ crosshairImg.src = "assets/images/crosshair0.png";
 // Sachen vom HTML
 // ========================
 
-const gameOverElement = document.getElementById("gameOver");
+const gameOverScreen = document.getElementById("gameOverScreen");
+const restartBtn = document.getElementById("restartBtn");
+const menuBtn = document.getElementById("menuBtn");
 
-let timeLeft = 30; // Sekunden
+const finalScore = document.getElementById("finalScore");
+
+let timeLeft = 1; // in Sekunden ************************************************************************ zeit wurde zum testen des GameOver-screens verkürzt, war auf 30
 let gameRunning = true;
 
 // ========================
@@ -277,7 +281,25 @@ function endGame() {
   clearInterval(timer);
   cancelAnimationFrame(animationId);
 
+  // Score einsetzen
+  finalScore.textContent = "Score: " + score;
+
+  // Overlay anzeigen
+  gameOverScreen.style.display = "flex";
+
   console.log("Game Over! Score:", score);
 }
 
+// ========================
+// Restart Button
+// ========================
+restartBtn.addEventListener("click", () => {
+  location.reload();
+});
 
+// ========================
+// Menü Button
+// ========================
+menuBtn.addEventListener("click", () => {
+  window.location.href = "https://pixelpulps.github.io/play_a_game/";  // play_a_Game-Seite
+});
