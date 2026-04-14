@@ -13,3 +13,79 @@ canvas {
   height: auto; /*100vh; /* 50% der Bildschirmhöhe */
   display: block;
 }
+
+/* Für GameOver */
+#gameOverScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+  background: rgba(0, 0, 0, 0.5); /* leichter Dark Overlay */
+}
+
+.gameOverContainer {  
+  position: relative;
+}
+
+.gameOverImage {
+  width: 1000px;
+  display: block;
+}
+
+/* Score Text im weißen Feld */
+.gameOverScore {
+  position: absolute;
+  top: 250px;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  font-family: 'Press Start 2P', cursive;
+  font-size: 20px;
+  color: black;
+}
+
+/* Buttons */
+.gameOverBtn {
+  position: absolute;
+  width: 250px;     /* Breite an Feld anpassen */
+  height: 50px;     /* Höhe an Feld anpassen */
+
+  font-family: 'Press Start 2P', cursive;
+  font-size: 15px;
+  color: white;
+
+  /* Schwarze Umrandung */
+  text-shadow:
+    2px 2px 0 black,
+    -2px 2px 0 black,
+    2px -2px 0 black,
+    -2px -2px 0 black;
+
+  background: transparent;
+  /*background: rgba(255, 0, 0, 0.3);  Debug Trick, button-hintergrund leicht anzeigen lassen*/  
+
+  border: none;
+  cursor: pointer;
+}
+
+/* Linker Button (grünes Feld) */
+#restartBtn {
+  bottom: 165px;
+  left: 240px;
+}
+
+/* Rechter Button (braunes Feld) */
+#menuBtn {
+  bottom: 165px;
+  right: 230px;
+}
+
+.gameOverBtn:hover {
+  background: rgba(255,255,255,0.1);
+}

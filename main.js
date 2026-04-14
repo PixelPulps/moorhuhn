@@ -24,7 +24,7 @@ const menuBtn = document.getElementById("menuBtn");
 
 const finalScore = document.getElementById("finalScore");
 
-let timeLeft = 30; // Sekunden
+let timeLeft = 1; // in Sekunden ************************************************************************ zeit wurde zum testen des GameOver-screens verkürzt, war auf 30
 let gameRunning = true;
 
 // ========================
