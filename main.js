@@ -24,7 +24,7 @@ const menuBtn = document.getElementById("menuBtn");
 
 const finalScore = document.getElementById("finalScore");
 
-let timeLeft = 1; // in Sekunden ************************************************************************ zeit wurde zum testen des GameOver-screens verkürzt, war auf 30
+let timeLeft = 90;                                         // Zeit in Sekunden
 let gameRunning = true;
 
 // ========================
@@ -112,7 +112,13 @@ class Chicken {
 // ========================
 // gameLoop
 // ========================
-const chickens = [new Chicken(), new Chicken()];
+const chickens = [];
+const chickenCount = 5;                         // Anzahl der Hühner
+
+for (let i = 0; i < chickenCount; i++) {
+  chickens.push(new Chicken());
+}
+
 let score = 0;
 let animationId;
 
