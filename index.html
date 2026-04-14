@@ -3,10 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Moorhuhn</title>
+  <link rel="icon" href="assets/images/favicon.png" type="image/png">  <!-- favicon -->
+
   <link rel="stylesheet" href="style.css">
+  
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <div id="gameOverScreen">
+
+    <div class="gameOverContainer">
+      <img src="assets/images/moorhuhn-GameOver1.png" class="gameOverImage">
+
+      <!-- Score -->
+      <div id="finalScore" class="gameOverScore">
+        Score: 0
+      </div>
+
+      <!-- Buttons -->
+      <button id="restartBtn" class="gameOverBtn">Nochmal spielen</button>
+      <button id="menuBtn" class="gameOverBtn">Hauptmenü</button>
+    </div>
+
+  </div>
 
   <canvas id="gameCanvas"></canvas>
 
