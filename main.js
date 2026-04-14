@@ -22,6 +22,8 @@ const gameOverScreen = document.getElementById("gameOverScreen");
 const restartBtn = document.getElementById("restartBtn");
 const menuBtn = document.getElementById("menuBtn");
 
+const finalScore = document.getElementById("finalScore");
+
 let timeLeft = 30; // Sekunden
 let gameRunning = true;
 
@@ -278,6 +280,9 @@ function endGame() {
 
   clearInterval(timer);
   cancelAnimationFrame(animationId);
+
+  // Score einsetzen
+  finalScore.textContent = "Score: " + score;
 
   // Overlay anzeigen
   gameOverScreen.style.display = "flex";
