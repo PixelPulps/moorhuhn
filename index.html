@@ -8,6 +8,39 @@
 </head>
 <body>
 
+  <div id="gameOverScreen" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  ">
+
+  <div style="position: relative;">
+    <img src="assets/images/moorhuhn-GameOver.png" style="width: 500px;">
+
+    <!-- Buttons -->
+    <button id="restartBtn" style="
+      position: absolute;
+      bottom: 20px;
+      left: 50px;
+      padding: 10px 20px;
+    ">Nochmal</button>
+
+    <button id="menuBtn" style="
+      position: absolute;
+      bottom: 20px;
+      right: 50px;
+      padding: 10px 20px;
+    ">Menü</button>
+  </div>
+
+</div>
+
   <canvas id="gameCanvas"></canvas>
 
   <script src="main.js"></script>
