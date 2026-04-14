@@ -15,7 +15,7 @@ const crosshairImg = new Image();
 crosshairImg.src = "assets/images/crosshair0.png";
 
 // ========================
-// Sachen vom HTML
+// Sachen vom HTML und Variablen
 // ========================
 
 const gameOverScreen = document.getElementById("gameOverScreen");
@@ -23,6 +23,8 @@ const restartBtn = document.getElementById("restartBtn");
 const menuBtn = document.getElementById("menuBtn");
 
 const finalScore = document.getElementById("finalScore");
+
+const TOP_SAFE_ZONE = 80; // z.B. 80px frei lassen für Score + Time
 
 let timeLeft = 90;                                         // Zeit in Sekunden
 let gameRunning = true;
@@ -51,7 +53,8 @@ function resizeCanvas() {
 
   chickens.forEach(chicken => {
     chicken.x = Math.max(0, Math.min(chicken.x, canvas.width - chickenSize));
-    chicken.y = Math.random() * (canvas.height - chickenSize);
+    chicken.y = TOP_SAFE_ZONE + Math.random() * (canvas.height - TOP_SAFE_ZONE - chickenSize);
+    // chicken.y = Math.random() * (canvas.height - chickenSize);
   });
 }
 
@@ -71,8 +74,8 @@ class Chicken {
       this.x = canvas.width + 50;
       this.speed = -(1 + Math.random() * 1.5);
     }
-
-    this.y = Math.random() * (canvas.height - 50);
+    this.y = TOP_SAFE_ZONE + Math.random() * (canvas.height - TOP_SAFE_ZONE - 50);
+    // this.y = Math.random() * (canvas.height - 50);
     this.alive = true;
   }
 
@@ -96,7 +99,8 @@ class Chicken {
       this.speed = -(1 + Math.random() * 1.5);
     }
 
-    this.y = Math.random() * (canvas.height - 50);
+    this.y = TOP_SAFE_ZONE + Math.random() * (canvas.height - TOP_SAFE_ZONE - 50);
+    // this.y = Math.random() * (canvas.height - 50);
     this.alive = true;
   }
 
